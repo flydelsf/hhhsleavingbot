@@ -1,0 +1,155 @@
+<!doctype html>
+<html ="zh-Hang-TW">
+<head>
+  <meta charset="utf-8">
+  <title>教師註冊表單</title>
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+window.onload = function(){  
+  liff.init({
+      liffId: '2000577025-rooXK9jg' // Use own liffId
+      //liffId: '2000577025-rooXK9jg', // Use own liffId
+      //withLoginOnExternalBrowser: true, // Enable automatic login process
+  }).then(() => {
+      // Start to use liff's api
+      console.log(liff.isLoggedIn());  // 判斷開啟此網頁的 LINE 使用者是否為登入狀態
+      alert(liff.isLoggedIn());
+  });
+
+  // 登入
+  liff.login({
+    // 使用者登入後要去到哪個頁面
+    redirectUri: 'https://www.xxxxxx.com.tw'
+  });
+  
+  // 登出
+  liff.logout();
+}
+/*
+  var myLiffId = "2000577025-rooXK9jg";
+  
+      function initializeLiff(myLiffId) {
+        liff
+          .init({
+            liffId: myLiffId,
+          })
+          .then(() => {
+            alert('LIFF init success!');
+          })
+          .catch((err) => {
+            alert(`error: ${JSON.stringify(err)}`);
+          });
+      }
+*/
+      
+      
+function test(){
+  sendMsg = "Hello, World!";
+  /*
+  liff.sendMessages([
+      {
+        type: "text",
+        text: sendMsg,
+      },
+    ])
+  */
+  alert(sendMsg);  
+  //liff.closeWindow();
+}
+function sendInfo(){
+  if (document.getElementById('name').value==""){alert("姓名為必填喔!"); return;}
+  if (document.getElementById('office').value==""){alert("請選擇所屬處室!"); return;}
+  if (document.getElementById('role').value==""){alert("請選擇身分!"); return;}
+  if (document.getElementById('role').value=="導師"&&(document.getElementById('grade').value=="0")){alert("請選擇年級!"); return;}
+  if (document.getElementById('role').value=="導師"&&(document.getElementById('class').value=="0")){alert("請選擇班級!"); return;}
+  
+  var sendMsg="/TeacherReg";
+  sendMsg = sendMsg + "," + document.getElementById('name').value;
+  sendMsg = sendMsg + "," + document.getElementById('office').value;
+  sendMsg = sendMsg + "," + document.getElementById('role').value;
+  sendMsg = sendMsg + "," + document.getElementById('grade').value;
+  sendMsg = sendMsg + "," + document.getElementById('class').value;
+  alert(sendMsg);
+  
+  liff.sendMessages([
+    {
+      type: 'text',
+      text: sendMsg
+    }
+  ])
+  liff.closeWindow();
+}
+function changeRole(option){
+  if (option.value=="國中導師群"||option.value=="高中導師群"){
+    document.getElementById("role").innerHTML="<option value=\"導師\">導師<\/option>";
+    document.getElementById("role").disabled="";
+    document.getElementById("grade").disabled="";
+    document.getElementById("class").disabled="";
+  }
+  if (option.value=="學務處"){
+    document.getElementById("role").innerHTML="<option value=\"生輔組\">生輔組<\/option><option value=\"學務主任\">學務主任<\/option>";
+    document.getElementById("role").disabled="";
+    document.getElementById("grade").disabled="disabled";
+    document.getElementById("class").disabled="disabled";
+    document.getElementById("grade").value="0";
+    document.getElementById("class").value="0";
+  }
+  if (option.value=="秘書室"){
+    document.getElementById("role").innerHTML="<option value=\"秘書\">秘書<\/option>";
+    document.getElementById("role").disabled="";
+    document.getElementById("grade").disabled="disabled";
+    document.getElementById("class").disabled="disabled";
+    document.getElementById("grade").value="0";
+    document.getElementById("class").value="0";
+  }
+}
+</script>
+</head>
+ <body>
+
+   <h1>教師帳號註冊表單123</h1>
+   <span>請輸入姓名</span> <input type="text" id="name"/><br>
+   <span>請選擇所屬處室</span>
+     <select id="office" onChange="changeRole(this);">
+       <option value=""></option>
+       <option value="高中導師群">高中導師群</option>
+       <option value="國中導師群">國中導師群</option>
+       <option value="學務處">學務處</option>
+       <option value="秘書室">秘書室</option>
+     </select><br>
+   <span>請選擇身份</span>
+     <select id="role" disabled="disabled">
+       <option value=""></option>
+       <option value="導師">導師</option>
+       <option value="生輔組">生輔組</option>
+       <option value="學務主任">學務主任</option>
+       <option value="秘書">秘書</option>
+     </select><br>
+   <span>請選擇年級</span>
+       <select id="grade" disabled="disabled">
+         <option value="0"></option>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+       </select><br>
+   <span>請選擇班級</span>
+       <select id="class" disabled="disabled">
+         <option value="0"></option>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+       </select><br>  
+   <button type="button" id="send" onClick="sendInfo();">提交</button>
+   <button type="button" id="test" onclick="test();">測試用</button>
+   
+ </body>
+</html>
